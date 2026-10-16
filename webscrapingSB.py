@@ -8,13 +8,15 @@ response = requests.get(url)
 print(response.status_code)
 
 soup = BeautifulSoup(response.text, "html.parser")
-books = soup.find_all("article", class_="product_pod")
+books = soup.find_all("ul", class_="nav nav-list")
 
 with open("books.csv", "w", newline="") as f:
     writer = csv.writer(f)
-    writer.writerow(["Title", " Price"])
+    writer.writerow(["Category"])
 
-    for book in books:
-        title = book.h3.a["title"]
-        price = book.find("p", class_="price_color").text
-        writer.writerow([title, " " + price])
+for book in books[0].select("ul ul a"):
+    category = book.string
+    print(category)
+    #writer.writerow([category])
+
+print(books)
